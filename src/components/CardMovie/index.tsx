@@ -7,6 +7,7 @@ import {
   CardActions,
   Box,
   Button,
+  Rating,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -19,7 +20,9 @@ export interface ICardMovie {
   posterPath: string;
   handleClickDetails: (id: number) => void;
   handleAddFavorite: (id: number, title: string, posterPath: string) => void;
+  handleChangeRating: (id: number, value: number) => void;
   listFavoritedMovies: { id: number; title: string; posterPath: string }[];
+  listRatedMovies: { id: number; value: number }[];
 }
 
 const CardMovie: React.FC<ICardMovie> = ({
@@ -30,9 +33,12 @@ const CardMovie: React.FC<ICardMovie> = ({
   posterPath,
   handleClickDetails,
   handleAddFavorite,
+  handleChangeRating,
+  listRatedMovies,
   listFavoritedMovies,
 }) => {
   const theme = useTheme();
+
   return (
     <Card sx={{ maxWidth: 380, width: "360px" }}>
       <CardMedia
@@ -73,6 +79,12 @@ const CardMovie: React.FC<ICardMovie> = ({
             </Button>
           </Box>
         </Box>
+        <Rating
+          name="size-medium"
+          defaultValue={0}
+          value={listRatedMovies.find((movie) => movie.id === id)?.value || 0}
+          onChange={(e, newValue) => handleChangeRating(newValue, id)}
+        />
       </CardActions>
     </Card>
   );

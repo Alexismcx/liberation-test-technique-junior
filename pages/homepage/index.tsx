@@ -24,21 +24,14 @@ export interface IHome {
 const Home: NextPage<IHome> = ({ latestMovie }) => {
   const [moviesList, setMoviesList] = useState<IMovie[]>(latestMovie);
   const [sortOrder, setSortOrder] = useState<string>("asc");
-  //   const [listFavoritedMovies, setListFavoritedMovies] = useState<
-  //     IListMoviesFavorite[]
-  //   >([]);
 
   const { models, operations } = useMovies();
 
-  const { listFavoritedMovies } = models;
-  const { handleAddFavorite, handleClickDetails } = operations;
+  const { listFavoritedMovies, listRatedMovies } = models;
+  const { handleAddFavorite, handleClickDetails, handleChangeRating } =
+    operations;
 
   const theme = useTheme();
-
-  //   useEffect(() => {
-  //     const storedData = localStorage.getItem("favoritedMovies");
-  //     if (storedData) setListFavoritedMovies(JSON.parse(storedData));
-  //   }, []);
 
   const toggleSortOrder = (): void => {
     setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
@@ -55,35 +48,6 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
     toggleSortOrder();
     setMoviesList(sortMoviesByReleaseDate(moviesList, sortOrder));
   };
-
-  //   const handleClickDetails = (id): void => {
-  //     router.push(`/details/${id}`);
-  //   };
-
-  //   const saveFavoriteListLocalStorage = (newList: IListMoviesFavorite[]) => {
-  //     setListFavoritedMovies(newList);
-  //     localStorage.setItem("favoritedMovies", JSON.stringify(newList));
-  //   };
-
-  //   const handleAddFavorite = (
-  //     id: number,
-  //     title: string,
-  //     posterPath: string
-  //   ): void => {
-  //     const existingIndex = listFavoritedMovies.findIndex(
-  //       (movie) => movie.id === id
-  //     );
-
-  //     if (existingIndex !== -1) {
-  //       const updatedList = listFavoritedMovies.filter(
-  //         (_, index) => index !== existingIndex
-  //       );
-  //       saveFavoriteListLocalStorage(updatedList);
-  //     } else {
-  //       const updatedList = [...listFavoritedMovies, { id, title, posterPath }];
-  //       saveFavoriteListLocalStorage(updatedList);
-  //     }
-  //   };
 
   return (
     <Box bgcolor={theme.palette.secondary.main}>
@@ -115,6 +79,8 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
                     posterPath={poster_path}
                     handleClickDetails={handleClickDetails}
                     handleAddFavorite={handleAddFavorite}
+                    handleChangeRating={handleChangeRating}
+                    listRatedMovies={listRatedMovies}
                     listFavoritedMovies={listFavoritedMovies}
                   />
                 </Grid>

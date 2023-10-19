@@ -3,7 +3,7 @@ import {
   useTheme,
   CardContent,
   Typography,
-  CardActions,
+  Rating,
   Box,
 } from "@mui/material";
 
@@ -13,6 +13,8 @@ export interface ICardDetailsMovie {
   overview: string;
   releaseDate: string;
   posterPath: string;
+  listRatedMovies: { id: number; value: number }[];
+  handleChangeRating: (id: number, value: number) => void;
 }
 
 const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
@@ -21,6 +23,8 @@ const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
   overview,
   releaseDate,
   posterPath,
+  listRatedMovies,
+  handleChangeRating,
 }) => {
   const theme = useTheme();
   return (
@@ -30,12 +34,12 @@ const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
           display="flex"
           justifyContent="center"
           alignItems="center"
+          flexDirection="column"
           sx={{
             height: 350,
             width: "100%",
             objectFit: "cover",
-            backgroundImage: `url('https://image.tmdb.org/t/p/w500/${posterPath}')`,
-            filter: "brightness(50%)",
+            background: `linear-gradient(rgba(0, 75, 170, 0.5), rgba(0,0,0,0)), url('https://image.tmdb.org/t/p/w500/${posterPath}')`,
           }}
         >
           <Typography
@@ -46,6 +50,12 @@ const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
           >
             {title}
           </Typography>
+          <Rating
+            name="size-medium"
+            defaultValue={0}
+            value={listRatedMovies.find((movie) => movie.id === id)?.value || 0}
+            onChange={(e, newValue) => handleChangeRating(newValue, id)}
+          />
         </Box>
       </Box>
       <CardContent>
@@ -60,7 +70,6 @@ const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
           {overview}
         </Typography>
       </CardContent>
-      <CardActions></CardActions>
     </Card>
   );
 };

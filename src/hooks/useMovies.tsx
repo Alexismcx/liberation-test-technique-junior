@@ -6,12 +6,17 @@ export const useMovies = () => {
   const [listFavoritedMovies, setListFavoritedMovies] = useState<
     IListMoviesFavorite[]
   >([]);
+  const [listRatedMovies, setListRatedMovies] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
-    const storedData = localStorage.getItem("favoritedMovies");
-    if (storedData) setListFavoritedMovies(JSON.parse(storedData));
+    const storedFavoritedMovies = localStorage.getItem("favoritedMovies");
+    if (storedFavoritedMovies)
+      setListFavoritedMovies(JSON.parse(storedFavoritedMovies));
+
+    const storedRatedMovies = localStorage.getItem("ratedMoviesList");
+    if (storedRatedMovies) setListRatedMovies(JSON.parse(storedRatedMovies));
   }, []);
 
   const handleClickDetails = (id): void => {
@@ -21,6 +26,11 @@ export const useMovies = () => {
   const saveFavoriteListLocalStorage = (newList: IListMoviesFavorite[]) => {
     setListFavoritedMovies(newList);
     localStorage.setItem("favoritedMovies", JSON.stringify(newList));
+  };
+
+  const saveRatedMoviesLocalStorage = (newList: IListMoviesFavorite[]) => {
+    setListRatedMovies(newList);
+    localStorage.setItem("ratedMoviesList", JSON.stringify(newList));
   };
 
   const handleAddFavorite = (
@@ -43,11 +53,26 @@ export const useMovies = () => {
     }
   };
 
+  const handleChangeRating = (value: number, id: number): void => {
+    const existingIndex = listRatedMovies.findIndex((movie) => movie.id === id);
+
+    if (existingIndex !== -1) {
+      const updatedList = listRatedMovies.map((movie, index) =>
+        index === existingIndex ? { ...movie, value } : movie
+      );
+      saveRatedMoviesLocalStorage(updatedList);
+    } else {
+      const updatedList = [...listRatedMovies, { id, value }];
+      saveRatedMoviesLocalStorage(updatedList);
+    }
+  };
+
   return {
-    models: { listFavoritedMovies },
+    models: { listFavoritedMovies, listRatedMovies },
     operations: {
       handleAddFavorite,
       handleClickDetails,
+      handleChangeRating,
     },
   };
 };

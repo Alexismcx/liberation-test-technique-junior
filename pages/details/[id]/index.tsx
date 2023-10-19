@@ -21,8 +21,9 @@ const DetailsMovie: React.FC<IDetails> = ({
 }) => {
   const { models, operations } = useMovies();
 
-  const { listFavoritedMovies } = models;
-  const { handleAddFavorite, handleClickDetails } = operations;
+  const { listFavoritedMovies, listRatedMovies } = models;
+  const { handleAddFavorite, handleClickDetails, handleChangeRating } =
+    operations;
 
   const { overview, title, release_date, id, poster_path } = detailsMovie;
 
@@ -42,6 +43,8 @@ const DetailsMovie: React.FC<IDetails> = ({
               posterPath={poster_path}
               releaseDate={release_date}
               id={id}
+              listRatedMovies={listRatedMovies}
+              handleChangeRating={handleChangeRating}
             ></CardDetailsMovie>
           </Box>
           <Box></Box>
@@ -69,6 +72,8 @@ const DetailsMovie: React.FC<IDetails> = ({
                     posterPath={poster_path}
                     handleClickDetails={handleClickDetails}
                     handleAddFavorite={handleAddFavorite}
+                    handleChangeRating={handleChangeRating}
+                    listRatedMovies={listRatedMovies}
                     listFavoritedMovies={listFavoritedMovies}
                   />
                 </Grid>
