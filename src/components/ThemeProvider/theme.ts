@@ -32,22 +32,22 @@ export const mainTheme = createTheme({
         fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
         fontSize: '2.125rem'
     },
-    // h4: {
-    //     fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
-    //     fontSize: '1.5rem'
-    // },
-    // subtitle1: {
-    //     fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
-    //     fontSize: '1.25rem'
-    // },
+    h4: {
+        fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
+        fontSize: '1.5rem'
+    },
+    subtitle1: {
+        fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
+        fontSize: '1.25rem'
+    },
     // subtitle2: {
     //     fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
     //     fontSize: '1.125rem'
     // },
-    // body1: {
-    //     fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
-    //     fontSize: '1rem'
-    // },
+    body1: {
+        fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
+        fontSize: '1rem'
+    },
     // body2: {
     //     fontFamily: ['Neue Montreal', 'sans-serif'].join(','),
     //     fontSize: '0.875rem'
