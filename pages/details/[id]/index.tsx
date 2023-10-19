@@ -1,65 +1,36 @@
 import api from "api";
 
-import { Box, useTheme, Container } from "@mui/material";
+import { Box, useTheme, Container, Typography, Grid } from "@mui/material";
 import CardDetailsMovie from "components/CardDetailsMovie";
-import { getDetailsMovieUrl } from "api/movieDb";
 
-export interface IDetailsMovie {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: {
-    id: number;
-    name: string;
-    poster_path: string;
-    backdrop_path: string;
-  };
-  budget: number;
-  genres: { id: number; name: string }[];
-  homepage: string;
-  id: number;
-  imdb_id: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: {
-    id: number;
-    logo_path: string | null;
-    name: string;
-    origin_country: string;
-  }[];
-  production_countries: {
-    iso_3166_1: string;
-    name: string;
-  }[];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: {
-    english_name: string;
-    iso_639_1: string;
-    name: string;
-  }[];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
+import { getDetailsMovieUrl } from "api/movieDb";
+import { getSuggestedMovies } from "api/movieDb";
+import { IMovie } from "api/movieDb";
+import { IDetailsMovie } from "api/movieDb";
+import CardMovie from "components/CardMovie";
+import { useMovies } from "hooks/useMovies";
 
 export interface IDetails {
   detailsMovie: IDetailsMovie;
+  listSuggestedMovies: IMovie[];
 }
 
-const DetailsMovie: React.FC<IDetails> = ({ detailsMovie }) => {
+const DetailsMovie: React.FC<IDetails> = ({
+  detailsMovie,
+  listSuggestedMovies,
+}) => {
+  const { models, operations } = useMovies();
+
+  const { listFavoritedMovies } = models;
+  const { handleAddFavorite, handleClickDetails } = operations;
+
   const { overview, title, release_date, id, poster_path } = detailsMovie;
+
   const theme = useTheme();
 
   return (
-    <Box bgcolor={theme.palette.secondary.main} sx={{ height: "100vh" }}>
-      <Box component="section" py={10}>
+    <Box bgcolor={theme.palette.secondary.main}>
+      <Box component="section" pt={10} pb={5}>
         <Container
           maxWidth="lg"
           sx={{ display: "flex", justifyContent: "center" }}
@@ -73,6 +44,37 @@ const DetailsMovie: React.FC<IDetails> = ({ detailsMovie }) => {
               id={id}
             ></CardDetailsMovie>
           </Box>
+          <Box></Box>
+        </Container>
+      </Box>
+      <Box component="section" py={3}>
+        <Container maxWidth="lg">
+          <Typography
+            sx={{ textTransform: "uppercase" }}
+            variant="h1"
+            mb={5}
+            color={theme.palette.text.secondary}
+          >
+            Suggestions Films
+          </Typography>
+          <Grid rowSpacing={3} container>
+            {listSuggestedMovies?.map(
+              ({ title, id, overview, release_date, poster_path }) => (
+                <Grid key={id} item lg={4} md={6} sm={12}>
+                  <CardMovie
+                    id={id}
+                    title={title}
+                    releaseDate={release_date}
+                    overview={overview}
+                    posterPath={poster_path}
+                    handleClickDetails={handleClickDetails}
+                    handleAddFavorite={handleAddFavorite}
+                    listFavoritedMovies={listFavoritedMovies}
+                  />
+                </Grid>
+              )
+            )}
+          </Grid>
         </Container>
       </Box>
     </Box>
@@ -89,10 +91,16 @@ export const getServerSideProps = async (ctx) => {
     .then((response) => {
       return response?.data;
     });
+  const getSuggestedMovie = await api
+    .get(getSuggestedMovies(id))
+    .then((response) => {
+      return response?.data?.results;
+    });
 
   return {
     props: {
       detailsMovie: getDetailsMovie,
+      listSuggestedMovies: getSuggestedMovie,
     },
   };
 };

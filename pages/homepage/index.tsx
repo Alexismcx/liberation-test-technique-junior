@@ -14,28 +14,8 @@ import CardMovie from "components/CardMovie";
 
 import api from "api";
 import { getLatestMoviesUrl } from "api/movieDb";
-export interface IMovie {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-
-export interface IListMoviesFavorite {
-  id: number;
-  title: string;
-  posterPath: string;
-}
+import { IMovie } from "api/movieDb";
+import { useMovies } from "hooks/useMovies";
 
 export interface IHome {
   latestMovie: IMovie[];
@@ -44,17 +24,21 @@ export interface IHome {
 const Home: NextPage<IHome> = ({ latestMovie }) => {
   const [moviesList, setMoviesList] = useState<IMovie[]>(latestMovie);
   const [sortOrder, setSortOrder] = useState<string>("asc");
-  const [listFavoritedMovies, setListFavoritedMovies] = useState<
-    IListMoviesFavorite[]
-  >([]);
+  //   const [listFavoritedMovies, setListFavoritedMovies] = useState<
+  //     IListMoviesFavorite[]
+  //   >([]);
 
-  const router = useRouter();
+  const { models, operations } = useMovies();
+
+  const { listFavoritedMovies } = models;
+  const { handleAddFavorite, handleClickDetails } = operations;
+
   const theme = useTheme();
 
-  useEffect(() => {
-    const storedData = localStorage.getItem("favoritedMovies");
-    if (storedData) setListFavoritedMovies(JSON.parse(storedData));
-  }, []);
+  //   useEffect(() => {
+  //     const storedData = localStorage.getItem("favoritedMovies");
+  //     if (storedData) setListFavoritedMovies(JSON.parse(storedData));
+  //   }, []);
 
   const toggleSortOrder = (): void => {
     setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
@@ -72,34 +56,34 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
     setMoviesList(sortMoviesByReleaseDate(moviesList, sortOrder));
   };
 
-  const handleClickDetails = (id): void => {
-    router.push(`/details/${id}`);
-  };
+  //   const handleClickDetails = (id): void => {
+  //     router.push(`/details/${id}`);
+  //   };
 
-  const saveFavoriteListLocalStorage = (newList: IListMoviesFavorite[]) => {
-    setListFavoritedMovies(newList);
-    localStorage.setItem("favoritedMovies", JSON.stringify(newList));
-  };
+  //   const saveFavoriteListLocalStorage = (newList: IListMoviesFavorite[]) => {
+  //     setListFavoritedMovies(newList);
+  //     localStorage.setItem("favoritedMovies", JSON.stringify(newList));
+  //   };
 
-  const handleAddFavorite = (
-    id: number,
-    title: string,
-    posterPath: string
-  ): void => {
-    const existingIndex = listFavoritedMovies.findIndex(
-      (movie) => movie.id === id
-    );
+  //   const handleAddFavorite = (
+  //     id: number,
+  //     title: string,
+  //     posterPath: string
+  //   ): void => {
+  //     const existingIndex = listFavoritedMovies.findIndex(
+  //       (movie) => movie.id === id
+  //     );
 
-    if (existingIndex !== -1) {
-      const updatedList = listFavoritedMovies.filter(
-        (_, index) => index !== existingIndex
-      );
-      saveFavoriteListLocalStorage(updatedList);
-    } else {
-      const updatedList = [...listFavoritedMovies, { id, title, posterPath }];
-      saveFavoriteListLocalStorage(updatedList);
-    }
-  };
+  //     if (existingIndex !== -1) {
+  //       const updatedList = listFavoritedMovies.filter(
+  //         (_, index) => index !== existingIndex
+  //       );
+  //       saveFavoriteListLocalStorage(updatedList);
+  //     } else {
+  //       const updatedList = [...listFavoritedMovies, { id, title, posterPath }];
+  //       saveFavoriteListLocalStorage(updatedList);
+  //     }
+  //   };
 
   return (
     <Box bgcolor={theme.palette.secondary.main}>
