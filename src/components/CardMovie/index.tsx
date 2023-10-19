@@ -8,6 +8,7 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export interface ICardMovie {
   title: string;
@@ -15,6 +16,7 @@ export interface ICardMovie {
   overview: string;
   releaseDate: string;
   posterPath: string;
+  handleClickDetails: (id: number) => void;
 }
 
 const CardMovie: React.FC<ICardMovie> = ({
@@ -23,6 +25,7 @@ const CardMovie: React.FC<ICardMovie> = ({
   overview,
   releaseDate,
   posterPath,
+  handleClickDetails,
 }) => {
   const theme = useTheme();
   return (
@@ -50,7 +53,17 @@ const CardMovie: React.FC<ICardMovie> = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="contained">Details</Button>
+        <Box width="100%" display="flex" justifyContent={"space-between"}>
+          <Button variant="contained" onClick={() => handleClickDetails(id)}>
+            Details
+          </Button>
+          <Box display="flex" alignItems="center">
+            <Typography>Like</Typography>
+            <Button>
+              <FavoriteBorderIcon></FavoriteBorderIcon>
+            </Button>
+          </Box>
+        </Box>
       </CardActions>
     </Card>
   );

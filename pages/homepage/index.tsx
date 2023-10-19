@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import {
   Box,
@@ -37,6 +38,7 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
   const [moviesList, setMoviesList] = useState(latestMovie);
   const [sortOrder, setSortOrder] = useState("asc");
 
+  const router = useRouter();
   const theme = useTheme();
 
   const toggleSortOrder = () => {
@@ -55,8 +57,12 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
     setMoviesList(sortMoviesByReleaseDate(moviesList, sortOrder));
   };
 
+  const handleClickDetails = (id) => {
+    router.push(`/details/${id}`);
+  };
+
   return (
-    <Box bgcolor={theme.palette.secondary.main} sx={{ height: "100vh" }}>
+    <Box bgcolor={theme.palette.secondary.main}>
       <Box component="section" py={10}>
         <Container maxWidth="lg">
           <Box>
@@ -83,6 +89,7 @@ const Home: NextPage<IHome> = ({ latestMovie }) => {
                     releaseDate={release_date}
                     overview={overview}
                     posterPath={poster_path}
+                    handleClickDetails={handleClickDetails}
                   />
                 </Grid>
               )
