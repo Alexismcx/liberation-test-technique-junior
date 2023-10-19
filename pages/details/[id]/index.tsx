@@ -2,6 +2,7 @@ import api from "api";
 
 import { Box, useTheme, Container } from "@mui/material";
 import CardDetailsMovie from "components/CardDetailsMovie";
+import { getDetailsMovieUrl } from "api/movieDb";
 
 export interface IDetailsMovie {
   adult: boolean;
@@ -54,8 +55,6 @@ export interface IDetails {
 
 const DetailsMovie: React.FC<IDetails> = ({ detailsMovie }) => {
   const { overview, title, release_date, id, poster_path } = detailsMovie;
-  console.log("detailsMovie", detailsMovie);
-
   const theme = useTheme();
 
   return (
@@ -85,9 +84,11 @@ export default DetailsMovie;
 export const getServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
-  const getDetailsMovie = await api.get(`/movie/${id}`).then((response) => {
-    return response?.data;
-  });
+  const getDetailsMovie = await api
+    .get(getDetailsMovieUrl(id))
+    .then((response) => {
+      return response?.data;
+    });
 
   return {
     props: {

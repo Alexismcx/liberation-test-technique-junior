@@ -1,0 +1,2 @@
+export const getLatestMoviesUrl = (): string => "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&primary_release_year=2023"
+export const getDetailsMovieUrl = (id: string): string => `/movie/${id}`

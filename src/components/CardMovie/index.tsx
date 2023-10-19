@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export interface ICardMovie {
   title: string;
@@ -17,6 +18,8 @@ export interface ICardMovie {
   releaseDate: string;
   posterPath: string;
   handleClickDetails: (id: number) => void;
+  handleAddFavorite: (id: number, title: string, posterPath: string) => void;
+  listFavoritedMovies: { id: number; title: string; posterPath: string }[];
 }
 
 const CardMovie: React.FC<ICardMovie> = ({
@@ -26,6 +29,8 @@ const CardMovie: React.FC<ICardMovie> = ({
   releaseDate,
   posterPath,
   handleClickDetails,
+  handleAddFavorite,
+  listFavoritedMovies,
 }) => {
   const theme = useTheme();
   return (
@@ -59,8 +64,12 @@ const CardMovie: React.FC<ICardMovie> = ({
           </Button>
           <Box display="flex" alignItems="center">
             <Typography>Like</Typography>
-            <Button>
-              <FavoriteBorderIcon></FavoriteBorderIcon>
+            <Button onClick={() => handleAddFavorite(id, title, posterPath)}>
+              {listFavoritedMovies.some((movie) => movie.id === id) ? (
+                <FavoriteIcon />
+              ) : (
+                <FavoriteBorderIcon />
+              )}
             </Button>
           </Box>
         </Box>
