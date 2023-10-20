@@ -51,6 +51,7 @@ const CardDetailsMovie: React.FC<ICardDetailsMovie> = ({
             {title}
           </Typography>
           <Rating
+            data-testid="rating-star"
             name="size-medium"
             defaultValue={0}
             value={listRatedMovies.find((movie) => movie.id === id)?.value || 0}

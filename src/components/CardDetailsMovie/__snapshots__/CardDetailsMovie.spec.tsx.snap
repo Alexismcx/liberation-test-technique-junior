@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardDetailsMovie> should match the snapshot 1`] = `
+<h2
+  class="MuiTypography-root MuiTypography-h2 css-2982by-MuiTypography-root"
+>
+  Title Detail
+</h2>
+`;

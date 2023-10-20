@@ -70,7 +70,10 @@ const CardMovie: React.FC<ICardMovie> = ({
           </Button>
           <Box display="flex" alignItems="center">
             <Typography>Like</Typography>
-            <Button onClick={() => handleAddFavorite(id, title, posterPath)}>
+            <Button
+              data-testid="button-favorite"
+              onClick={() => handleAddFavorite(id, title, posterPath)}
+            >
               {listFavoritedMovies.some((movie) => movie.id === id) ? (
                 <FavoriteIcon />
               ) : (
@@ -80,6 +83,7 @@ const CardMovie: React.FC<ICardMovie> = ({
           </Box>
         </Box>
         <Rating
+          data-testid="rating-star"
           name="size-medium"
           defaultValue={0}
           value={listRatedMovies.find((movie) => movie.id === id)?.value || 0}

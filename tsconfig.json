@@ -5,7 +5,7 @@
     "**/*.tsx",
     "**/*.css",
     "**.*.js",
-    "src",
+    "src"
   ],
   "compilerOptions": {
     "baseUrl": "src",
@@ -17,7 +17,9 @@
       "esnext"
     ],
     "paths": {
-      "api/*": ["../../../api/*"]
+      "api/*": [
+        "../../../api/*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -37,5 +39,3 @@
     "node_modules"
   ]
 }
-
-
