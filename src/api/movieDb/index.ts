@@ -69,4 +69,9 @@ export interface IListMoviesFavorite {
     title: string;
     posterPath: string;
 }
+
+export interface IListRatedMovies {
+  id: number;
+ value: string;
+}
   

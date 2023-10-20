@@ -1,6 +1,5 @@
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
 
 import {
   Box,

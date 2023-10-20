@@ -1,22 +1,30 @@
 import { IListMoviesFavorite } from "api/movieDb";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  IMovieSlice,
+  setFavoritedMovies,
+  setRatedMovies,
+} from "slices/movieSlice";
 
 export const useMovies = () => {
-  const [listFavoritedMovies, setListFavoritedMovies] = useState<
-    IListMoviesFavorite[]
-  >([]);
-  const [listRatedMovies, setListRatedMovies] = useState([]);
+  const dispatch = useDispatch();
+  const { listFavoritedMovies, listRatedMovies } = useSelector(
+    (state: { movies: IMovieSlice }) => state.movies
+  );
 
   const router = useRouter();
 
   useEffect(() => {
     const storedFavoritedMovies = localStorage.getItem("favoritedMovies");
     if (storedFavoritedMovies)
-      setListFavoritedMovies(JSON.parse(storedFavoritedMovies));
+      dispatch(setFavoritedMovies(JSON.parse(storedFavoritedMovies)));
 
     const storedRatedMovies = localStorage.getItem("ratedMoviesList");
-    if (storedRatedMovies) setListRatedMovies(JSON.parse(storedRatedMovies));
+    if (storedRatedMovies)
+      dispatch(setRatedMovies(JSON.parse(storedRatedMovies)));
   }, []);
 
   const handleClickDetails = (id): void => {
@@ -24,12 +32,12 @@ export const useMovies = () => {
   };
 
   const saveFavoriteListLocalStorage = (newList: IListMoviesFavorite[]) => {
-    setListFavoritedMovies(newList);
+    dispatch(setFavoritedMovies(newList));
     localStorage.setItem("favoritedMovies", JSON.stringify(newList));
   };
 
   const saveRatedMoviesLocalStorage = (newList: IListMoviesFavorite[]) => {
-    setListRatedMovies(newList);
+    dispatch(setRatedMovies(newList));
     localStorage.setItem("ratedMoviesList", JSON.stringify(newList));
   };
 
